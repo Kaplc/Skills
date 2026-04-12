@@ -31,7 +31,8 @@
       "Bash(cp -r \"E:/Project/Skills/skills/skl-task-executor\" \"C:/Users/Kaplc/.claude/skills/\")",
       "Bash(cp -r \"E:/Project/Skills/skills/skl-skill-creator\" \"C:/Users/Kaplc/.claude/skills/\")",
       "Bash(rm -rf ../skills-package)",
-      "Bash(mkdir -p ../skills-package)"
+      "Bash(mkdir -p ../skills-package)",
+      "Bash(rm -rf \"C:/Users/Kaplc/.claude/skills/skl-task-documentor\")"
     ]
   }
 }
