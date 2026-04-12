@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh auth:*)",
+      "Bash(cp:*)",
+      "Bash(pip install:*)",
+      "Bash(python test_server.py)",
+      "Bash(python -c \"import sys; print\\(sys.executable\\)\")",
+      "Bash(pip show:*)",
+      "Bash(python:*)",
+      "Bash(setx PYTHONIOENCODING:*)",
+      "Bash(set PYTHONIOENCODING=utf-8)",
+      "Bash(where claude:*)",
+      "Bash(claude skills:*)",
+      "Bash(CLAUDE_CODE_GIT_BASH_PATH=\"C:/Program Files/Git/bin/bash.exe\" claude skills install idea-documentor.skill)",
+      "Bash(bash --version)",
+      "Read(//usr/bin/**)",
+      "Bash(cygpath -m \"/usr/bin/bash\")",
+      "Bash(CLAUDE_CODE_GIT_BASH_PATH=\"D:/Develop/Git/bin/bash.exe\" claude skills install idea-documentor.skill)",
+      "Bash(CLAUDE_CODE_GIT_BASH_PATH=\"D:\\\\\\\\Develop\\\\\\\\Git\\\\\\\\bin\\\\\\\\bash.exe\" claude skills install idea-documentor.skill)",
+      "Bash(cp -r \"E:/Project/Skills/skills/idea-documentor\" \"C:/Users/Kaplc/.claude/skills/\")",
+      "Bash(cp -r \"E:/Project/Skills/skills/task-documentor\" \"C:/Users/Kaplc/.claude/skills/\")",
+      "Bash(cp -r \"E:/Project/Skills/skills/task-executor\" \"C:/Users/Kaplc/.claude/skills/\")",
+      "Bash(mv idea-documentor:*)",
+      "Bash(mv task-documentor:*)",
+      "Bash(mv task-executor:*)",
+      "Bash(mv skill-creator:*)",
+      "Bash(rm -rf \"C:/Users/Kaplc/.claude/skills/idea-documentor\" \"C:/Users/Kaplc/.claude/skills/task-documentor\" \"C:/Users/Kaplc/.claude/skills/task-executor\" \"C:/Users/Kaplc/.claude/skills/skill-creator\")",
+      "Bash(cp -r \"E:/Project/Skills/skills/skl-idea-documentor\" \"C:/Users/Kaplc/.claude/skills/\")",
+      "Bash(cp -r \"E:/Project/Skills/skills/skl-task-documentor\" \"C:/Users/Kaplc/.claude/skills/\")",
+      "Bash(cp -r \"E:/Project/Skills/skills/skl-task-executor\" \"C:/Users/Kaplc/.claude/skills/\")",
+      "Bash(cp -r \"E:/Project/Skills/skills/skl-skill-creator\" \"C:/Users/Kaplc/.claude/skills/\")",
+      "Bash(rm -rf ../skills-package)",
+      "Bash(mkdir -p ../skills-package)"
+    ]
+  }
+}

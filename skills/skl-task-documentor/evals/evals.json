@@ -1,0 +1,17 @@
+{
+  "skill_name": "task-documentor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把 docs/需求文档/音乐播放器_20260412.md 这个思路文档转换成开发任务",
+      "expected_output": "为每个模块生成独立的开发任务文档，包含任务总览表、每个任务的详细步骤和验收标准",
+      "files": ["docs/需求文档/音乐播放器_20260412.md"]
+    },
+    {
+      "id": 2,
+      "prompt": "帮我把同目录下的 SkillSystem_思路.md 转成任务文档",
+      "expected_output": "生成模块化任务文档，每个模块独立文件，包含任务拆解、依赖关系、验收标准",
+      "files": []
+    }
+  ]
+}
