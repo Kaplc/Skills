@@ -1,0 +1,12 @@
+[
+  {"query": "帮我执行 tasks.json 里的所有任务，工作区是 E:/UnityProject/MyGame", "should_trigger": true},
+  {"query": "开始跑 C:/project/tasks_音乐播放器.json，把所有没完成的任务都做掉", "should_trigger": true},
+  {"query": "自动完成 tasks.json 里的开发任务，每个任务做完后更新 acceptance 状态", "should_trigger": true},
+  {"query": "循环执行任务列表，直到所有任务的 passed 都变成 true", "should_trigger": true},
+  {"query": "帮我把 tasks_SkillSystem.json 的待执行任务逐个完成", "should_trigger": true},
+  {"query": "把思路文档转成 tasks.json 任务清单", "should_trigger": false},
+  {"query": "帮我规划一下背景音乐系统怎么实现", "should_trigger": false},
+  {"query": "读取 tasks.json，看看里面有几个任务", "should_trigger": false},
+  {"query": "帮我写 AudioManager.cs 这个文件", "should_trigger": false},
+  {"query": "查看 tasks.json 里 T-003 的 acceptance 状态", "should_trigger": false}
+]

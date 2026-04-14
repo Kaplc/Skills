@@ -1,0 +1,62 @@
+{
+  "planName": "正则表达式改进测试",
+  "generatedAt": "2026-04-13T11:34:39.019141",
+  "tasks": [
+    {
+      "id": "T-001",
+      "goal": "实现 Instance 属性（单例模式）",
+      "implementationIdea": "使用 if (_instance == null) 检查实例，first-time 时进行初始化",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-002",
+      "goal": "实现 GetVolume（）方法",
+      "implementationIdea": "返回当前音量值，从 AudioSource 组件获取",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-003",
+      "goal": "实现 Play(AudioClip clip) 方法",
+      "implementationIdea": "赋值 clip，调用 AudioSource.Play()",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-004",
+      "goal": "实现音量控制方法",
+      "implementationIdea": "提供 SetVolume 和 GetVolume 两个方法",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2"
+        ],
+        "failedReason": null
+      }
+    }
+  ]
+}

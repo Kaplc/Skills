@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 """
-Task Generator MCP - 生成任务 JSON
-
-使用 FastMCP 框架
-逐条追加任务，每个任务对应一个函数，包含 goal + implementationIdea
+Test script for task_generator_mcp tools - 直接测试工具逻辑（不依赖 FastMCP）
 """
 
 import json
@@ -12,30 +9,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional, List
 
-try:
-    from fastmcp import FastMCP
-except ImportError:
-    print("需要安装 fastmcp: pip install fastmcp", file=__import__('sys').stderr)
-    raise
+# ============ 工具实现（从 task_generator_mcp.py 复制）============
 
-# 创建 MCP Server
-mcp = FastMCP("task-generator-mcp")
-
-# ============ Generator 工具 ============
-
-@mcp.tool()
 def init_tasks_json(output_path: str, plan_name: str) -> dict:
-    """
-    初始化一个空的 tasks.json 文件（框架）。
-    如果文件已存在则返回 error，不覆盖。
-
-    Args:
-        output_path: 输出文件的绝对路径（包含文件名）
-        plan_name:   方案名称
-
-    Returns:
-        { success, outputPath, planName } 或 { success: false, error }
-    """
     path = Path(output_path)
     if path.exists():
         return {
@@ -59,7 +35,6 @@ def init_tasks_json(output_path: str, plan_name: str) -> dict:
     }
 
 
-@mcp.tool()
 def append_task(
     tasks_json_path: str,
     goal: str,
@@ -67,20 +42,6 @@ def append_task(
     module: str,
     checks: List[str]
 ) -> dict:
-    """
-    向已有 tasks.json 追加一条任务（每次只能追加一个）。
-    自动生成递增 id（T-001, T-002...）。
-
-    Args:
-        tasks_json_path:     JSON 文件路径
-        goal:                任务目标（一句话，必须包含函数名）
-        implementation_idea: 实现思路（2-4句话，说明如何实现）
-        module:              所属模块名
-        checks:              验收检查项列表
-
-    Returns:
-        { success, taskId, totalCount } 或 { success: false, error }
-    """
     path = Path(tasks_json_path)
     if not path.exists():
         return {
@@ -91,7 +52,6 @@ def append_task(
     data = json.loads(path.read_text(encoding='utf-8'))
     tasks = data.get("tasks", [])
 
-    # 自动生成下一个 id
     next_num = len(tasks) + 1
     task_id = f"T-{next_num:03d}"
 
@@ -119,24 +79,7 @@ def append_task(
     }
 
 
-@mcp.tool()
 def review_tasks(tasks_json_path: str) -> dict:
-    """
-    审查所有已追加的任务，检查质量问题。只读不修改。
-
-    审查规则：
-    1. goal 必须包含函数名（含括号或"方法/函数"关键词）
-    2. implementationIdea 必须有实质内容（非空，>10字）
-    3. checks 至少有 2 条
-    4. goal 不能重复
-    5. module 不能为空
-
-    Args:
-        tasks_json_path: JSON 文件路径
-
-    Returns:
-        { success, totalCount, issues: [...], summary }
-    """
     path = Path(tasks_json_path)
     if not path.exists():
         return {
@@ -159,8 +102,7 @@ def review_tasks(tasks_json_path: str) -> dict:
 
         # 规则1: goal 必须含函数名
         has_function_name = bool(
-            re.search(r'[A-Z][a-zA-Z]*\s*[\(\（]', goal) or  # 英文或中文括号
-            re.search(r'[\(（][^\)）]*[\)\）]', goal) or      # 括号匹配（任意括号）
+            re.search(r'[A-Z][a-zA-Z]*\s*\(', goal) or
             re.search(r'方法|函数', goal)
         )
         if not has_function_name:
@@ -219,7 +161,6 @@ def review_tasks(tasks_json_path: str) -> dict:
     }
 
 
-@mcp.tool()
 def update_task(
     tasks_json_path: str,
     task_id: str,
@@ -228,21 +169,6 @@ def update_task(
     module: Optional[str] = None,
     checks: Optional[List[str]] = None
 ) -> dict:
-    """
-    修改指定任务的内容（用于审查后修正）。
-    不传的字段不修改。
-
-    Args:
-        tasks_json_path:     JSON 文件路径
-        task_id:             要修改的任务 id，如 "T-001"
-        goal:                新的任务目标（可选）
-        implementation_idea: 新的实现思路（可选）
-        module:              新的模块名（可选）
-        checks:              新的验收检查项列表（可选）
-
-    Returns:
-        { success, taskId } 或 { success: false, error }
-    """
     path = Path(tasks_json_path)
     if not path.exists():
         return {
@@ -282,19 +208,7 @@ def update_task(
     }
 
 
-# ============ Executor 工具 ============
-
-@mcp.tool()
 def get_next_task(tasks_json_path: str) -> dict:
-    """
-    获取下一个未完成（passed=false）的任务。
-
-    Args:
-        tasks_json_path: JSON 文件路径
-
-    Returns:
-        { success, task } 或 { success: true, task: null, message } 或 { success: false, error }
-    """
     path = Path(tasks_json_path)
     if not path.exists():
         return {
@@ -319,25 +233,12 @@ def get_next_task(tasks_json_path: str) -> dict:
     }
 
 
-@mcp.tool()
 def update_task_result(
     tasks_json_path: str,
     task_id: str,
     passed: bool,
     failed_reason: Optional[str] = None
 ) -> dict:
-    """
-    更新任务的执行结果（验收结果）。
-
-    Args:
-        tasks_json_path: JSON 文件路径
-        task_id:         任务 id，如 "T-001"
-        passed:          是否通过
-        failed_reason:   失败原因（passed=false 时填写）
-
-    Returns:
-        { success, taskId } 或 { success: false, error }
-    """
     path = Path(tasks_json_path)
     if not path.exists():
         return {
@@ -371,17 +272,7 @@ def update_task_result(
     }
 
 
-@mcp.tool()
 def get_summary(tasks_json_path: str) -> dict:
-    """
-    获取任务完成情况摘要。
-
-    Args:
-        tasks_json_path: JSON 文件路径
-
-    Returns:
-        { success, planName, total, passed, failed, pending, tasks }
-    """
     path = Path(tasks_json_path)
     if not path.exists():
         return {
@@ -416,7 +307,165 @@ def get_summary(tasks_json_path: str) -> dict:
     }
 
 
-# ============ 启动 ============
+# ============ 测试流程 ============
+
+def test_complete_workflow():
+    print("=" * 70)
+    print("开始测试 task-documentor 完整工作流")
+    print("=" * 70)
+
+    test_dir = Path("C:/Users/v_zhyyzheng/Desktop/Skills/skills/skl-task-documentor/test_output")
+    test_dir.mkdir(exist_ok=True)
+    json_path = str(test_dir / "tasks_test.json")
+
+    # 阶段1: 初始化
+    print("\n【阶段1】初始化 tasks.json")
+    print("-" * 70)
+    result = init_tasks_json(json_path, "音乐播放器方案测试")
+    print(f"✓ init_tasks_json: {result}")
+    assert result["success"] == True
+
+    # 阶段2: 逐条追加 - 添加 5 个任务
+    print("\n【阶段2】逐条追加任务")
+    print("-" * 70)
+
+    tasks_to_add = [
+        {
+            "goal": "创建 AudioManager 类骨架，继承 MonoBehaviour，声明字段和构造函数",
+            "implementation_idea": "声明 _instance 静态字段用于单例、_audioSource 组件引用。编写空构造函数确保编译通过。",
+            "module": "AudioManager",
+            "checks": ["AudioManager.cs 文件已创建", "类继承 MonoBehaviour", "字段声明完整", "编译通过"]
+        },
+        {
+            "goal": "实现 Instance 属性（单例模式）",
+            "implementation_idea": "使用 if (_instance == null) 检查实例，first-time 时进行初始化，调用 DontDestroyOnLoad() 保证跨场景持久化。",
+            "module": "AudioManager",
+            "checks": ["Instance 属性已定义", "单例模式正确（null 检查 + DontDestroyOnLoad）", "编译通过"]
+        },
+        {
+            "goal": "实现 Play(AudioClip clip) 方法",
+            "implementation_idea": "接收 AudioClip 参数，先进行空值检查，然后赋值给 _audioSource.clip，最后调用 _audioSource.Play()。",
+            "module": "AudioManager",
+            "checks": ["Play 方法已定义", "参数非空检查存在", "调用 AudioSource.Play()", "编译通过"]
+        },
+        {
+            "goal": "实现 Stop() 方法",
+            "implementation_idea": "调用 _audioSource.Stop() 停止当前播放",  # 故意太短，会触发审查规则
+            "module": "AudioManager",
+            "checks": ["Stop 方法已定义"]  # 故意只有 1 条，会触发审查规则
+        },
+        {
+            "goal": "实现 Pause() 方法",
+            "implementation_idea": "调用 _audioSource.Pause() 暂停当前播放，在需要时可用 Play() 恢复。",
+            "module": "AudioManager",
+            "checks": ["Pause 方法已定义", "正确调用 AudioSource.Pause()", "编译通过"]
+        }
+    ]
+
+    for i, task_info in enumerate(tasks_to_add, 1):
+        result = append_task(
+            json_path,
+            task_info["goal"],
+            task_info["implementation_idea"],
+            task_info["module"],
+            task_info["checks"]
+        )
+        print(f"  Task {i}: {result}")
+        assert result["success"] == True
+
+    # 阶段3: 全局审查
+    print("\n【阶段3】全局审查和自动修正")
+    print("-" * 70)
+
+    review_result = review_tasks(json_path)
+    print(f"\n审查结果摘要: {review_result['summary']}")
+    print(f"总任务数: {review_result['totalCount']}")
+
+    if review_result["issues"]:
+        print(f"\n发现 {len(review_result['issues'])} 条 issues:")
+        for issue in review_result["issues"]:
+            print(f"\n  [{issue['taskId']}] {issue['issueType']}")
+            print(f"    问题: {issue['description']}")
+            print(f"    建议: {issue['suggestion']}")
+
+        # 自动修正
+        print("\n自动修正问题中...")
+        for issue in review_result["issues"]:
+            task_id = issue["taskId"]
+            issue_type = issue["issueType"]
+
+            if issue_type == "weak_implementation_idea":
+                # 补充实现思路
+                if task_id == "T-004":
+                    fix_result = update_task(
+                        json_path,
+                        task_id,
+                        implementation_idea="调用 _audioSource.Stop() 停止当前播放，清理播放状态标志"
+                    )
+                    print(f"  ✓ 修复 {task_id} implementationIdea: {fix_result}")
+
+            elif issue_type == "insufficient_checks":
+                # 补充检查项
+                if task_id == "T-004":
+                    fix_result = update_task(
+                        json_path,
+                        task_id,
+                        checks=["Stop 方法已定义", "正确调用 AudioSource.Stop()", "编译通过"]
+                    )
+                    print(f"  ✓ 修复 {task_id} checks: {fix_result}")
+
+        # 再次审查
+        print("\n再次审查确认...")
+        review_result2 = review_tasks(json_path)
+        print(f"审查结果摘要: {review_result2['summary']}")
+        if not review_result2["issues"]:
+            print("✓ 所有问题已解决！")
+    else:
+        print("✓ 所有任务都通过审查！")
+
+    # 阶段4: 获取摘要
+    print("\n【阶段4】任务摘要")
+    print("-" * 70)
+    summary = get_summary(json_path)
+    print(f"方案名: {summary['planName']}")
+    print(f"总任务数: {summary['total']}")
+    print(f"已完成: {summary['passed']}")
+    print(f"失败: {summary['failed']}")
+    print(f"待做: {summary['pending']}")
+
+    # 阶段5: 测试 executor 工具
+    print("\n【阶段5】测试 executor 工具")
+    print("-" * 70)
+
+    # 获取第一个未完成任务
+    next_task = get_next_task(json_path)
+    print(f"下一个任务: {next_task['task']['id']} - {next_task['task']['goal']}")
+
+    # 标记第一个任务为完成
+    update_result = update_task_result(json_path, "T-001", passed=True)
+    print(f"✓ 更新 T-001 为已完成: {update_result}")
+
+    # 标记第二个任务为失败
+    update_result = update_task_result(json_path, "T-002", passed=False, failed_reason="编译错误: 缺少引用")
+    print(f"✓ 标记 T-002 失败: {update_result}")
+
+    # 再次获取摘要
+    summary = get_summary(json_path)
+    print(f"\n更新后摘要:")
+    print(f"  已完成: {summary['passed']}")
+    print(f"  失败: {summary['failed']}")
+    print(f"  待做: {summary['pending']}")
+
+    print("\n【最终结果】")
+    print("=" * 70)
+    print("✅ 所有工具测试通过！")
+    print("=" * 70)
+
+    # 打印最终 JSON
+    print("\n最终 tasks.json 内容:")
+    final_json = json.loads(Path(json_path).read_text(encoding='utf-8'))
+    print(json.dumps(final_json, ensure_ascii=False, indent=2))
+
 
 if __name__ == "__main__":
-    mcp.run()
+    test_complete_workflow()

@@ -1,0 +1,16 @@
+# Python 虚拟环境
+.venv/
+venv/
+env/
+.env/
+ENV/
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 分发/打包
+dist/
+*.skill

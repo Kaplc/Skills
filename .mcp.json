@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "task-generator": {
+      "command": "C:\\Users\\v_zhyyzheng\\Desktop\\Skills\\mcp-servers\\.venv\\Scripts\\python.exe",
+      "args": [
+        "C:\\Users\\v_zhyyzheng\\Desktop\\Skills\\skills\\skl-task-documentor\\scripts\\task_generator_mcp.py"
+      ],
+      "disabled": false
+    },
+    "task-executor": {
+      "command": "C:\\Users\\v_zhyyzheng\\Desktop\\Skills\\mcp-servers\\.venv\\Scripts\\python.exe",
+      "args": [
+        "C:\\Users\\v_zhyyzheng\\Desktop\\Skills\\skills\\skl-task-executor\\scripts\\task_executor_mcp.py"
+      ],
+      "disabled": false
+    }
+  }
+}

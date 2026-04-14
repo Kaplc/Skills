@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "task-generator": {
+      "command": "python",
+      "args": [
+        "skills/skl-task-documentor/scripts/task_generator_mcp.py"
+      ]
+    },
+    "task-executor": {
+      "command": "python",
+      "args": [
+        "skills/skl-task-executor/scripts/task_executor_mcp.py"
+      ]
+    }
+  }
+}

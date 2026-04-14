@@ -1,0 +1,243 @@
+{
+  "planName": "模块化音频管理器方案",
+  "generatedAt": "2026-04-13T16:48:29.762668",
+  "tasks": [
+    {
+      "id": "T-001",
+      "goal": "创建 AudioManager 类骨架，实现 Awake() 方法，声明单例字段和 AudioSource 引用",
+      "implementationIdea": "新建 AudioManager.cs 文件，声明 private static _instance 字段和 private AudioSource _audioSource 字段，继承 MonoBehaviour，添加空的 Awake() 方法占位。",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "AudioManager.cs 文件已创建",
+          "类继承 MonoBehaviour",
+          "_instance 静态字段已声明",
+          "_audioSource 字段已声明",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-002",
+      "goal": "实现 Instance 属性（get），使用单例模式保证 AudioManager 全局唯一",
+      "implementationIdea": "在 Awake() 中判断 _instance 是否为 null，若为空则赋值并调用 DontDestroyOnLoad(gameObject)，若不为空则销毁当前对象，公开 static Instance 属性返回 _instance。",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Instance 属性已定义",
+          "单例空值检查存在",
+          "调用 DontDestroyOnLoad()",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-003",
+      "goal": "实现 Play(AudioClip clip) 方法，播放指定音频剪辑",
+      "implementationIdea": "接收 AudioClip 参数，先检查 clip 是否为 null（为空则 return），将 clip 赋值给 _audioSource.clip，然后调用 _audioSource.Play() 开始播放。",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Play 方法已定义",
+          "clip 空值检查存在",
+          "调用 AudioSource.Play()",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-004",
+      "goal": "实现 Pause() 方法，暂停当前音频播放",
+      "implementationIdea": "直接调用 _audioSource.Pause() 暂停播放，暂停状态下可通过再次调用 Play() 恢复。",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Pause 方法已定义",
+          "调用 AudioSource.Pause()",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-005",
+      "goal": "实现 Stop() 方法，停止当前音频播放",
+      "implementationIdea": "直接调用 _audioSource.Stop() 停止当前播放，停止后播放位置重置为起点。",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Stop 方法已定义",
+          "调用 AudioSource.Stop()",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-006",
+      "goal": "创建 Playlist 数据类，定义 Tracks(List) 字段及 PlayMode 枚举",
+      "implementationIdea": "新建 Playlist.cs，声明 Name(string)、Tracks(List&lt;AudioClip&gt;)、CurrentIndex(int)、IsLooping(bool)、Mode(PlayMode) 字段；同文件定义 PlayMode 枚举，包含 Sequential、Shuffle、RepeatOne、RepeatAll 四个值。",
+      "module": "PlaylistManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Playlist.cs 文件已创建",
+          "Name、Tracks、CurrentIndex、IsLooping、Mode 字段已声明",
+          "PlayMode 枚举包含 Sequential/Shuffle/RepeatOne/RepeatAll",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-007",
+      "goal": "创建 PlaylistManager 类骨架，实现 Start() 方法，声明 Playlist 和 AudioManager 引用字段",
+      "implementationIdea": "新建 PlaylistManager.cs，继承 MonoBehaviour，声明 private Playlist _playlist 字段和 private AudioManager _audioManager 引用，在 Start() 中初始化 _audioManager = AudioManager.Instance。",
+      "module": "PlaylistManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "PlaylistManager.cs 文件已创建",
+          "_playlist 字段已声明",
+          "_audioManager 引用已声明",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-008",
+      "goal": "实现 Add(AudioClip clip) 方法，向播放列表添加音频",
+      "implementationIdea": "检查 clip 是否为 null，非空则调用 _playlist.Tracks.Add(clip)，若 _playlist.Tracks 为 null 则先初始化列表再添加。",
+      "module": "PlaylistManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Add 方法已定义",
+          "clip 空值检查存在",
+          "添加到 Tracks 列表",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-009",
+      "goal": "实现 Remove(int index) 方法，从播放列表移除指定索引的音频",
+      "implementationIdea": "检查 index 是否在 [0, Tracks.Count) 范围内，有效则调用 _playlist.Tracks.RemoveAt(index)；若被移除的是当前播放项（CurrentIndex），则调整 CurrentIndex 防止越界。",
+      "module": "PlaylistManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Remove 方法已定义",
+          "索引越界检查存在",
+          "从 Tracks 列表移除元素",
+          "当前播放索引调整逻辑存在",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-010",
+      "goal": "实现 Next() 方法，切换到播放列表中的下一首音频",
+      "implementationIdea": "CurrentIndex 加 1，若超出 Tracks.Count-1 则根据 IsLooping 决定是回到 0（循环）还是停止；然后调用 _audioManager.Play(_playlist.Tracks[CurrentIndex])。",
+      "module": "PlaylistManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Next 方法已定义",
+          "列表末尾边界处理存在",
+          "更新 CurrentIndex 并调用 Play",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-011",
+      "goal": "实现 Previous() 方法，切换到播放列表中的上一首音频",
+      "implementationIdea": "CurrentIndex 减 1，若小于 0 则根据 IsLooping 决定是跳到 Tracks.Count-1（循环）还是停止；然后调用 _audioManager.Play(_playlist.Tracks[CurrentIndex])。",
+      "module": "PlaylistManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Previous 方法已定义",
+          "列表开头边界处理存在",
+          "更新 CurrentIndex 并调用 Play",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-012",
+      "goal": "创建 MusicPlayerUI 类骨架，实现 Start() 方法，声明 PlaylistManager 引用和 UGUI 组件字段",
+      "implementationIdea": "新建 MusicPlayerUI.cs，继承 MonoBehaviour，声明 private PlaylistManager _playlistManager 引用和必要的 [SerializeField] UGUI 组件引用（如 GameObject _panel、Text _trackNameText），在 Start() 中初始化。",
+      "module": "MusicPlayerUI",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "MusicPlayerUI.cs 文件已创建",
+          "_playlistManager 引用已声明",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-013",
+      "goal": "实现 Show() 方法，显示音乐播放器 UI 面板",
+      "implementationIdea": "调用 _panel.SetActive(true) 激活面板，然后调用 Refresh() 刷新当前显示内容确保数据最新。",
+      "module": "MusicPlayerUI",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Show 方法已定义",
+          "_panel 被激活",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-014",
+      "goal": "实现 Hide() 方法，隐藏音乐播放器 UI 面板",
+      "implementationIdea": "调用 _panel.SetActive(false) 隐藏面板，无需额外清理操作。",
+      "module": "MusicPlayerUI",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Hide 方法已定义",
+          "_panel 被隐藏",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-015",
+      "goal": "实现 Refresh() 方法，刷新 UI 显示当前播放状态和列表内容",
+      "implementationIdea": "从 _playlistManager 读取当前 Playlist 数据，更新 _trackNameText.text 显示当前曲目名称，遍历 Tracks 列表刷新歌曲列表 UI 元素。",
+      "module": "MusicPlayerUI",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "Refresh 方法已定义",
+          "当前曲目名称显示正确",
+          "播放列表内容已更新",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    }
+  ]
+}

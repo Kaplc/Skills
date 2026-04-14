@@ -1,0 +1,81 @@
+{
+  "planName": "最终测试方案",
+  "generatedAt": "2026-04-13T11:35:05.083484",
+  "tasks": [
+    {
+      "id": "T-001",
+      "goal": "创建 AudioManager 类骨架，继承 MonoBehaviour",
+      "implementationIdea": "声明 _instance 字段，编写构造函数",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "文件已创建",
+          "类定义存在",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-002",
+      "goal": "实现 Instance 属性（单例模式）",
+      "implementationIdea": "使用 if 检查实例，调用 DontDestroyOnLoad",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "属性已定义",
+          "单例模式正确",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-003",
+      "goal": "实现 Play（AudioClip clip）方法",
+      "implementationIdea": "赋值 clip，调用 AudioSource.Play()",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "方法已定义",
+          "参数检查",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-004",
+      "goal": "实现 Stop() 方法",
+      "implementationIdea": "调用 AudioSource.Stop() 停止播放，清理状态",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "方法已定义",
+          "正确调用 Stop()",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-005",
+      "goal": "实现音频队列管理功能",
+      "implementationIdea": "创建队列数据结构，支持 Enqueue 和 Dequeue 操作",
+      "module": "AudioQueue",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "队列类已创建",
+          "操作方法完整",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    }
+  ]
+}

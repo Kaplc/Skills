@@ -6,6 +6,8 @@ by calling `claude -p` as a subprocess (same auth pattern as run_eval.py —
 uses the session's Claude Code auth, no separate ANTHROPIC_API_KEY needed).
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -31,6 +33,20 @@ def _call_claude(prompt: str, model: str | None, timeout: int = 300) -> str:
     # Claude Code session. The guard is for interactive terminal conflicts;
     # programmatic subprocess usage is safe. Same pattern as run_eval.py.
     env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
+    # On Windows, claude -p requires git-bash. Auto-detect if not already set.
+    if sys.platform == "win32" and "CLAUDE_CODE_GIT_BASH_PATH" not in env:
+        _candidates = [
+            r"C:\Program Files\Git\bin\bash.exe",
+            r"C:\Program Files (x86)\Git\bin\bash.exe",
+            os.path.expandvars(r"%LOCALAPPDATA%\Programs\Git\bin\bash.exe"),
+            os.path.expandvars(
+                r"%LOCALAPPDATA%\Programs\WorkBuddy\resources\git-bash\PortableGit\bin\bash.exe"
+            ),
+        ]
+        for _c in _candidates:
+            if os.path.exists(_c):
+                env["CLAUDE_CODE_GIT_BASH_PATH"] = _c
+                break
 
     result = subprocess.run(
         cmd,

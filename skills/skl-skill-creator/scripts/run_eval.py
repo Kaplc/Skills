@@ -5,12 +5,15 @@ Tests whether a skill's description causes Claude to trigger (read the skill)
 for a set of queries. Outputs results as JSON.
 """
 
+from __future__ import annotations
+
 import argparse
 import json
 import os
-import select
+import queue
 import subprocess
 import sys
+import threading
 import time
 import uuid
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -80,7 +83,24 @@ def run_single_query(
         # Remove CLAUDECODE env var to allow nesting claude -p inside a
         # Claude Code session. The guard is for interactive terminal conflicts;
         # programmatic subprocess usage is safe.
+        # On Windows, claude -p requires git-bash. If CLAUDE_CODE_GIT_BASH_PATH
+        # is not already set, auto-detect common locations.
         env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
+        if sys.platform == "win32" and "CLAUDE_CODE_GIT_BASH_PATH" not in env:
+            _git_bash_candidates = [
+                r"C:\Program Files\Git\bin\bash.exe",
+                r"C:\Program Files (x86)\Git\bin\bash.exe",
+                os.path.expandvars(r"%LOCALAPPDATA%\Programs\Git\bin\bash.exe"),
+            ]
+            # Also search WorkBuddy portable git
+            _workbuddy = os.path.expandvars(
+                r"%LOCALAPPDATA%\Programs\WorkBuddy\resources\git-bash\PortableGit\bin\bash.exe"
+            )
+            _git_bash_candidates.append(_workbuddy)
+            for _candidate in _git_bash_candidates:
+                if os.path.exists(_candidate):
+                    env["CLAUDE_CODE_GIT_BASH_PATH"] = _candidate
+                    break
 
         process = subprocess.Popen(
             cmd,
@@ -88,6 +108,7 @@ def run_single_query(
             stderr=subprocess.DEVNULL,
             cwd=project_root,
             env=env,
+            bufsize=0,  # unbuffered — compatible with thread-based reading
         )
 
         triggered = False
@@ -97,22 +118,46 @@ def run_single_query(
         pending_tool_name = None
         accumulated_json = ""
 
+        # Use a thread to read stdout — avoids select() which is
+        # Windows-incompatible for pipes (WinError 10038).
+        line_queue: queue.Queue[str | None] = queue.Queue()
+
+        def _reader(pipe, q):
+            try:
+                while True:
+                    chunk = pipe.read(8192)
+                    if not chunk:
+                        break
+                    q.put(chunk.decode("utf-8", errors="replace"))
+            finally:
+                q.put(None)  # sentinel: stream ended
+
+        reader_thread = threading.Thread(
+            target=_reader, args=(process.stdout, line_queue), daemon=True
+        )
+        reader_thread.start()
+
         try:
             while time.time() - start_time < timeout:
-                if process.poll() is not None:
-                    remaining = process.stdout.read()
-                    if remaining:
-                        buffer += remaining.decode("utf-8", errors="replace")
+                try:
+                    raw = line_queue.get(timeout=0.5)
+                except queue.Empty:
+                    if process.poll() is not None:
+                        # Drain remaining lines
+                        while True:
+                            try:
+                                raw = line_queue.get_nowait()
+                            except queue.Empty:
+                                break
+                            if raw is None:
+                                break
+                            buffer += raw
                     break
 
-                ready, _, _ = select.select([process.stdout], [], [], 1.0)
-                if not ready:
-                    continue
+                if raw is None:
+                    break  # stream ended
 
-                chunk = os.read(process.stdout.fileno(), 8192)
-                if not chunk:
-                    break
-                buffer += chunk.decode("utf-8", errors="replace")
+                buffer += raw
 
                 while "\n" in buffer:
                     line, buffer = buffer.split("\n", 1)
@@ -174,6 +219,7 @@ def run_single_query(
             if process.poll() is None:
                 process.kill()
                 process.wait()
+            reader_thread.join(timeout=2)
 
         return triggered
     finally:

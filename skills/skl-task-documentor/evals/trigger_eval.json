@@ -1,0 +1,12 @@
+[
+  {"query": "帮我把同目录下的 SkillSystem_思路.md 转成任务文档", "should_trigger": true},
+  {"query": "把 docs/需求文档/音乐播放器_20260412.md 这个思路文档转换成开发任务", "should_trigger": true},
+  {"query": "我有一份实现思路文档，路径是 E:/project/docs/架构设计.md，帮我生成 tasks.json", "should_trigger": true},
+  {"query": "把这个 idea 文档拆解成可执行的任务清单，每个任务对应一个函数", "should_trigger": true},
+  {"query": "帮我把设计文档里的步骤转成 JSON 格式的任务列表，要包含 implementationIdea", "should_trigger": true},
+  {"query": "帮我执行 tasks.json 里的所有任务，工作区是 E:/UnityProject", "should_trigger": false},
+  {"query": "我想做一个背景音乐系统，帮我规划一下架构", "should_trigger": false},
+  {"query": "帮我 review 一下这个 tasks.json 文件的格式对不对", "should_trigger": false},
+  {"query": "读取 tasks.json，告诉我现在完成了几个任务", "should_trigger": false},
+  {"query": "帮我写一个 Python 脚本解析 JSON 文件", "should_trigger": false}
+]

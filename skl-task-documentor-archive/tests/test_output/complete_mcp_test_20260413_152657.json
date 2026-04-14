@@ -1,0 +1,114 @@
+{
+  "planName": "Unity 音乐播放器系统开发",
+  "generatedAt": "2026-04-13T15:26:57.416408",
+  "tasks": [
+    {
+      "id": "T-001",
+      "goal": "实现 AudioManager 类骨架",
+      "implementationIdea": "继承 MonoBehaviour，声明 _instance 字段实现单例，创建 _audioSource 组件引用",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "类已创建",
+          "继承正确",
+          "字段已声明",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-002",
+      "goal": "实现 Instance 属性（单例模式）",
+      "implementationIdea": "通过 getter 检查 _instance，若为空则创建新实例，返回 _instance 引用",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "属性已定义",
+          "单例逻辑正确",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-003",
+      "goal": "实现 Play(AudioClip clip) 方法",
+      "implementationIdea": "赋值 clip 到 AudioSource.clip，调用 AudioSource.Play()，添加空值检查",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "方法已定义",
+          "参数检查完整",
+          "调用正确",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-004",
+      "goal": "实现 Stop() 方法",
+      "implementationIdea": "调用 AudioSource.Stop() 停止播放，确保状态一致性",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "方法已定义",
+          "停止逻辑正确",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-005",
+      "goal": "实现 SetVolume（float volume）方法",
+      "implementationIdea": "验证音量范围 [0, 1]，赋值给 AudioSource.volume 属性",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "方法已定义",
+          "范围验证实现",
+          "赋值正确",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-006",
+      "goal": "实现 IsPlaying 属性",
+      "implementationIdea": "返回 AudioSource.isPlaying 状态，提供播放状态查询接口",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "属性已定义",
+          "返回值正确",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-007",
+      "goal": "编写单元测试（AudioManager）",
+      "implementationIdea": "测试所有公共方法和属性，验证单例、播放控制、音量调整等功能是否正常",
+      "module": "Tests",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "测试代码已编写",
+          "所有测试通过",
+          "代码覆盖率 >80%"
+        ],
+        "failedReason": null
+      }
+    }
+  ]
+}

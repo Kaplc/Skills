@@ -1,0 +1,36 @@
+{
+  "planName": "虚拟环境验证测试",
+  "generatedAt": "2026-04-13T15:07:11.801236",
+  "tasks": [
+    {
+      "id": "T-001",
+      "goal": "实现 TestMethod1() 方法",
+      "implementationIdea": "这是第1个测试任务的实现思路，需要完成一些测试操作",
+      "module": "TestModule",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2",
+          "检查3"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-002",
+      "goal": "实现 TestMethod2() 方法",
+      "implementationIdea": "这是第2个测试任务的实现思路，需要完成一些测试操作",
+      "module": "TestModule",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2",
+          "检查3"
+        ],
+        "failedReason": null
+      }
+    }
+  ]
+}

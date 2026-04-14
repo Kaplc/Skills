@@ -1,0 +1,83 @@
+{
+  "planName": "音乐播放器方案测试",
+  "generatedAt": "2026-04-13T11:33:43.923258",
+  "tasks": [
+    {
+      "id": "T-001",
+      "goal": "创建 AudioManager 类骨架，继承 MonoBehaviour，声明字段和构造函数",
+      "implementationIdea": "声明 _instance 静态字段用于单例、_audioSource 组件引用。编写空构造函数确保编译通过。",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "AudioManager.cs 文件已创建",
+          "类继承 MonoBehaviour",
+          "字段声明完整",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-002",
+      "goal": "实现 Instance 属性（单例模式）",
+      "implementationIdea": "使用 if (_instance == null) 检查实例，first-time 时进行初始化，调用 DontDestroyOnLoad() 保证跨场景持久化。",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "Instance 属性已定义",
+          "单例模式正确（null 检查 + DontDestroyOnLoad）",
+          "编译通过"
+        ],
+        "failedReason": "编译错误: 缺少引用"
+      }
+    },
+    {
+      "id": "T-003",
+      "goal": "实现 Play(AudioClip clip) 方法",
+      "implementationIdea": "接收 AudioClip 参数，先进行空值检查，然后赋值给 _audioSource.clip，最后调用 _audioSource.Play()。",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "Play 方法已定义",
+          "参数非空检查存在",
+          "调用 AudioSource.Play()",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-004",
+      "goal": "实现 Stop() 方法",
+      "implementationIdea": "调用 _audioSource.Stop() 停止当前播放",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "Stop 方法已定义",
+          "正确调用 AudioSource.Stop()",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-005",
+      "goal": "实现 Pause() 方法",
+      "implementationIdea": "调用 _audioSource.Pause() 暂停当前播放，在需要时可用 Play() 恢复。",
+      "module": "AudioManager",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "Pause 方法已定义",
+          "正确调用 AudioSource.Pause()",
+          "编译通过"
+        ],
+        "failedReason": null
+      }
+    }
+  ]
+}

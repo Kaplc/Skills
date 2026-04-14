@@ -1,0 +1,14 @@
+[
+  {"query": "我想做一个游戏内背景音乐系统，支持播放、暂停、切歌，帮我规划一下怎么实现", "should_trigger": true},
+  {"query": "需要开发一个用户登录模块，包括注册、登录、找回密码，给我一个实现方案", "should_trigger": true},
+  {"query": "这个功能怎么实现？我想在 Unity 里做一个背包系统，物品可以拖拽排序", "should_trigger": true},
+  {"query": "帮我规划一下 SkillSystem 技能系统，需要支持冷却、等级、被动触发", "should_trigger": true},
+  {"query": "我要做 AI 对话机器人，用 Python，集成 OpenAI API，怎么设计架构", "should_trigger": true},
+  {"query": "想实现一个任务队列系统，支持优先级调度和超时重试，给我思路", "should_trigger": true},
+  {"query": "帮我把 docs/音乐播放器_思路.md 这个文档转成开发任务列表", "should_trigger": false},
+  {"query": "帮我执行 tasks.json 里的任务，工作区在 E:/Project", "should_trigger": false},
+  {"query": "读取 AudioManager.cs 这个文件，告诉我 Play 方法是怎么实现的", "should_trigger": false},
+  {"query": "帮我把这段代码 review 一下，找找有没有 bug", "should_trigger": false},
+  {"query": "git commit 一下当前的改动", "should_trigger": false},
+  {"query": "把这个 JSON 文件格式化一下，看起来太乱了", "should_trigger": false}
+]

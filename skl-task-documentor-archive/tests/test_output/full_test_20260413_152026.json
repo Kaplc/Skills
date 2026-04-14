@@ -1,0 +1,81 @@
+{
+  "planName": "完整工作流测试",
+  "generatedAt": "2026-04-13T15:20:27.821145",
+  "tasks": [
+    {
+      "id": "T-001",
+      "goal": "实现 TestMethod1() 方法",
+      "implementationIdea": "第1个测试任务的实现思路，包含具体的实现步骤和检查项",
+      "module": "TestModule",
+      "acceptance": {
+        "passed": true,
+        "checks": [
+          "检查1",
+          "检查2",
+          "检查3"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-002",
+      "goal": "实现 TestMethod2() 方法",
+      "implementationIdea": "第2个测试任务的实现思路，包含具体的实现步骤和检查项",
+      "module": "TestModule",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2",
+          "检查3"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-003",
+      "goal": "实现 TestMethod3() 方法",
+      "implementationIdea": "第3个测试任务的实现思路，包含具体的实现步骤和检查项",
+      "module": "TestModule",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2",
+          "检查3"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-004",
+      "goal": "实现 TestMethod4() 方法",
+      "implementationIdea": "第4个测试任务的实现思路，包含具体的实现步骤和检查项",
+      "module": "TestModule",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2",
+          "检查3"
+        ],
+        "failedReason": null
+      }
+    },
+    {
+      "id": "T-005",
+      "goal": "实现 TestMethod5() 方法",
+      "implementationIdea": "第5个测试任务的实现思路，包含具体的实现步骤和检查项",
+      "module": "TestModule",
+      "acceptance": {
+        "passed": false,
+        "checks": [
+          "检查1",
+          "检查2",
+          "检查3"
+        ],
+        "failedReason": null
+      }
+    }
+  ]
+}
